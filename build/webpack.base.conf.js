@@ -24,7 +24,7 @@ module.exports = {
   externals: {
     'vue': 'Vue',
     'vuex': 'Vuex',
-    'vue-router': 'VueRouter',
+    'vue-router': 'Router',
     'element-ui': 'ELEMENT'
   },
   entry: {
