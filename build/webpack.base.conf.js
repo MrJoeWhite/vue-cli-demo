@@ -21,14 +21,8 @@ const createLintingRule = () => ({
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
-  externals: {
-    'vue': 'Vue',
-    'vuex': 'Vuex',
-    'vue-router': 'VueRouter',
-    'element-ui': 'ELEMENT'
-  },
   entry: {
-    app: './src/main.js'
+    app: './src/main.ts'
   },
   output: {
     path: config.build.assetsRoot,
@@ -38,7 +32,7 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: ['.js', '.vue', '.json', '.ts', '.tsx'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
@@ -48,9 +42,26 @@ module.exports = {
     rules: [
       ...(config.dev.useEslint ? [createLintingRule()] : []),
       {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        enforce: 'pre',
+        loader: 'tslint-loader'
+      },
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: vueLoaderConfig
+      },
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: [
+          "babel-loader",
+          {
+            loader: "ts-loader",
+            options: { appendTsxSuffixTo: [/\.vue$/] }
+          }
+        ]
       },
       {
         test: /\.js$/,
